@@ -1,3 +1,4 @@
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Calculator {
@@ -25,9 +26,9 @@ public class Calculator {
         Calculator calculator = new Calculator();
 
         logger.info("Calculator application is running!");
-        logger.info("Addition: " + calculator.add(10, 5));
-        logger.info("Subtraction: " + calculator.subtract(10, 5));
-        logger.info("Multiplication: " + calculator.multiply(10, 5));
-        logger.info("Division: " + calculator.divide(10, 5));
+        logger.log(Level.INFO, "Addition: {0}", calculator.add(10, 5));
+        logger.log(Level.INFO, "Subtraction: {0}", calculator.subtract(10, 5));
+        logger.log(Level.INFO, "Multiplication: {0}", calculator.multiply(10, 5));
+        logger.log(Level.INFO, "Division: {0}", calculator.divide(10, 5));
     }
 }

@@ -1,4 +1,6 @@
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 public class CalculatorTest {
@@ -27,6 +29,6 @@ public class CalculatorTest {
 
     @Test
     void testMain() {
-        Calculator.main(new String[]{});
+        assertDoesNotThrow(() -> Calculator.main(new String[]{}));
     }
 }
