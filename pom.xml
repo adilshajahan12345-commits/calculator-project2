@@ -29,6 +29,7 @@
     <build>
         <plugins>
 
+            <!-- JaCoCo Code Coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -49,6 +50,21 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Make the JAR executable -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>Calculator</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
 
         </plugins>
