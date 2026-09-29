@@ -46,6 +46,36 @@ pipeline {
                 sh 'docker build -t calculator-project:${BUILD_NUMBER} .'
             }
         }
+
+        stage('Docker Tag') {
+            steps {
+                sh 'docker tag calculator-project:${BUILD_NUMBER} adilshajahan/calculator-project:${BUILD_NUMBER}'
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                sh 'docker push adilshajahan/calculator-project:${BUILD_NUMBER}'
+            }
+        }
+
+        stage('Docker Logout') {
+            steps {
+                sh 'docker logout'
+            }
+        }
     }
 
     post {
@@ -53,13 +83,13 @@ pipeline {
         success {
             mail to: 'adilshajahan12345@gmail.com',
                  subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Build succeeded!\n\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}"
+                 body: "Build succeeded!\n\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nDocker image: adilshajahan/calculator-project:${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}"
         }
 
         failure {
             mail to: 'adilshajahan12345@gmail.com',
                  subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Build failed!\n\nJob: ${env.JOB_NAME} #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}"
+                 body: "Build failed!\n\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}"
         }
     }
 }
