@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent { label 'agent2' }
 
@@ -40,6 +41,12 @@ pipeline {
                 }
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t calculator-project:${BUILD_NUMBER} .'
+            }
+        }
     }
 
     post {
@@ -53,7 +60,7 @@ pipeline {
         failure {
             mail to: 'adilshajahan12345@gmail.com',
                  subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Build failed!\n\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}"
+                 body: "Build failed!\n\nJob: ${env.JOB_NAME} #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}"
         }
     }
 }
